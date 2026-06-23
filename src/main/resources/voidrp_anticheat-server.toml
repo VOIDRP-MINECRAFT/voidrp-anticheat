@@ -1,0 +1,31 @@
+# VoidRP Anticheat — server configuration
+[general]
+    enabled = true
+
+    # URL бэкенда VoidRP (без trailing slash)
+    backendUrl = "https://api.void-rp.ru"
+
+    # Секрет X-Game-Auth-Secret
+    gameAuthSecret = ""
+
+    # Минимальный VL (violation level) для отправки репорта на бэкенд
+    vlThreshold = 10
+
+[checks]
+    # Максимальная горизонтальная скорость, blocks/tick
+    # 0.28 = спринт, 0.42 = прыжок+спринт; 0.75 даёт запас для модовых эффектов и лага
+    speedThreshold = 0.75
+
+    # Тиков в воздухе без валидного состояния до флага (20 тиков = 1 сек)
+    # 40 тиков = 2 сек; учитывает прыжки с Jump Boost и модовые платформы
+    flyTicksThreshold = 40
+
+    # Максимальная дистанция атаки (blocks). Стандарт 3.0 + буфер на лаг/TPS просадки
+    reachThreshold = 6.5
+
+    # Максимальное число уникальных целей атаки за 1 секунду
+    # 6 позволяет честно бить группу мобов
+    killauraTargetsPerSecond = 6
+
+    # Максимальный CPS (clicks per second)
+    cpsThreshold = 25

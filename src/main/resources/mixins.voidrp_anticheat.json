@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "ru.voidrp.anticheat.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "mixins.voidrp_anticheat.refmap.json",
+  "mixins": [
+    "ResourcePackResponseMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}
