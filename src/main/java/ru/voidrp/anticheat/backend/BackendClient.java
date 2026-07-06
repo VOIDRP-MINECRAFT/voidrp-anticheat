@@ -88,12 +88,13 @@ public class BackendClient {
         String baseUrl = AnticheatConfig.BACKEND_URL.get();
         executor.submit(() -> {
             try {
-                HttpRequest req = HttpRequest.newBuilder()
+                HttpRequest.Builder rb = HttpRequest.newBuilder()
                         .uri(URI.create(baseUrl + "/api/v1/anticheat/config"))
                         .header("X-Game-Auth-Secret", secret)
                         .timeout(TIMEOUT)
-                        .GET()
-                        .build();
+                        .GET();
+                applyServerSlug(rb);
+                HttpRequest req = rb.build();
                 HttpResponse<String> resp = http.send(req, HttpResponse.BodyHandlers.ofString());
                 if (resp.statusCode() == 200) {
                     Map<String, Double> parsed = parseConfigJson(resp.body());
@@ -121,17 +122,26 @@ public class BackendClient {
         return result;
     }
 
+    /** Adds the optional X-Server-Slug header for explicit multi-server attribution. */
+    private static void applyServerSlug(HttpRequest.Builder rb) {
+        String slug = AnticheatConfig.SERVER_SLUG.get();
+        if (slug != null && !slug.isBlank()) {
+            rb.header("X-Server-Slug", slug);
+        }
+    }
+
     private void postAsync(String path, String body, String secret) {
         String baseUrl = AnticheatConfig.BACKEND_URL.get();
         executor.submit(() -> {
             try {
-                HttpRequest req = HttpRequest.newBuilder()
+                HttpRequest.Builder rb = HttpRequest.newBuilder()
                         .uri(URI.create(baseUrl + path))
                         .header("Content-Type", "application/json")
                         .header("X-Game-Auth-Secret", secret)
                         .timeout(TIMEOUT)
-                        .POST(HttpRequest.BodyPublishers.ofString(body))
-                        .build();
+                        .POST(HttpRequest.BodyPublishers.ofString(body));
+                applyServerSlug(rb);
+                HttpRequest req = rb.build();
                 HttpResponse<Void> resp = http.send(req, HttpResponse.BodyHandlers.discarding());
                 if (resp.statusCode() >= 400) {
                     VoidRpAnticheat.LOG.warn("[AntiCheat] Backend {} returned {}", path, resp.statusCode());
