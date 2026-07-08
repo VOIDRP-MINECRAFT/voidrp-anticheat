@@ -1,6 +1,6 @@
 package ru.voidrp.anticheat.network;
 
-import ru.voidrp.anticheat.compat.Compat;
+import ru.voidrp.anticheat.compat.ClientCompat;
 
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -23,12 +23,12 @@ public class AnticheatClientEvents {
         List<String> mods = ModList.get().getMods().stream()
                 .map(info -> info.getModId() + ":" + info.getVersion().toString())
                 .collect(Collectors.toList());
-        Compat.sendToServer(new ModListPayload(mods));
+        ClientCompat.sendToServer(new ModListPayload(mods));
         VoidRpAnticheat.LOG.debug("[AntiCheat] Sent mod list to server ({} mods)", mods.size());
 
         // Run injection detection off the main thread, then send result
         CompletableFuture.supplyAsync(InjectionDetector::detect).thenAccept(result -> {
-            Compat.sendToServer(new InjectionReportPayload(
+            ClientCompat.sendToServer(new InjectionReportPayload(
                     result.javaAgents(),
                     result.suspiciousLibraries(),
                     result.agentsDetected()

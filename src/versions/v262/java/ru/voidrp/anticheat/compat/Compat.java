@@ -5,7 +5,6 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
-import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import ru.voidrp.anticheat.VoidRpAnticheat;
 
 /**
@@ -19,10 +18,6 @@ public final class Compat {
         return new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(VoidRpAnticheat.MOD_ID, path));
     }
 
-    /** Отправка пейлоада с клиента на сервер. */
-    public static void sendToServer(CustomPacketPayload payload) {
-        ClientPacketDistributor.sendToServer(payload);
-    }
 
     public static Holder<MobEffect> speedEffect() {
         return MobEffects.SPEED;
