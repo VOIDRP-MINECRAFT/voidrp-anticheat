@@ -1,10 +1,11 @@
 package ru.voidrp.anticheat.network;
 
+import ru.voidrp.anticheat.compat.Compat;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public record InjectionReportPayload(
 ) implements CustomPacketPayload {
 
     public static final Type<InjectionReportPayload> TYPE =
-            new Type<>(ResourceLocation.fromNamespaceAndPath("voidrp_anticheat", "injection_report"));
+            Compat.payloadType("injection_report");
 
     public static final StreamCodec<FriendlyByteBuf, InjectionReportPayload> STREAM_CODEC =
             StreamCodec.composite(

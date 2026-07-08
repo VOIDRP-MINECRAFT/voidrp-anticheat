@@ -1,0 +1,34 @@
+package ru.voidrp.anticheat.compat;
+
+import net.minecraft.core.Holder;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
+import net.neoforged.neoforge.network.PacketDistributor;
+import ru.voidrp.anticheat.VoidRpAnticheat;
+
+/**
+ * Версионный адаптер API (Minecraft 1.21.1 / NeoForge 21.1).
+ * Общий код обращается только к этому классу; различия версий живут здесь.
+ */
+public final class Compat {
+    private Compat() {}
+
+    public static <T extends CustomPacketPayload> CustomPacketPayload.Type<T> payloadType(String path) {
+        return new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(VoidRpAnticheat.MOD_ID, path));
+    }
+
+    /** Отправка пейлоада с клиента на сервер. */
+    public static void sendToServer(CustomPacketPayload payload) {
+        PacketDistributor.sendToServer(payload);
+    }
+
+    public static Holder<MobEffect> speedEffect() {
+        return MobEffects.MOVEMENT_SPEED;
+    }
+
+    public static Holder<MobEffect> jumpBoostEffect() {
+        return MobEffects.JUMP;
+    }
+}

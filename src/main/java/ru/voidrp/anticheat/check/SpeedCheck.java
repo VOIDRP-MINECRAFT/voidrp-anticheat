@@ -1,5 +1,7 @@
 package ru.voidrp.anticheat.check;
 
+import ru.voidrp.anticheat.compat.Compat;
+
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.phys.Vec3;
@@ -31,8 +33,8 @@ public class SpeedCheck {
         double base = RemoteConfigManager.get("speed_threshold", AnticheatConfig.SPEED_THRESHOLD.get());
 
         // Adjust for Speed effect
-        if (player.hasEffect(MobEffects.MOVEMENT_SPEED)) {
-            int amp = player.getEffect(MobEffects.MOVEMENT_SPEED).getAmplifier();
+        if (player.hasEffect(Compat.speedEffect())) {
+            int amp = player.getEffect(Compat.speedEffect()).getAmplifier();
             base *= (1.0 + 0.2 * (amp + 1));
         }
 
@@ -40,8 +42,8 @@ public class SpeedCheck {
         if (player.hasEffect(MobEffects.DOLPHINS_GRACE)) base *= 1.5;
 
         // Jump Boost provides slight horizontal momentum on landing
-        if (player.hasEffect(MobEffects.JUMP)) {
-            int amp = player.getEffect(MobEffects.JUMP).getAmplifier();
+        if (player.hasEffect(Compat.jumpBoostEffect())) {
+            int amp = player.getEffect(Compat.jumpBoostEffect()).getAmplifier();
             base *= (1.0 + 0.05 * (amp + 1));
         }
 

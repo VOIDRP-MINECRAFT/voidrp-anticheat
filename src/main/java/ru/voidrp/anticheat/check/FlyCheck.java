@@ -1,5 +1,7 @@
 package ru.voidrp.anticheat.check;
 
+import ru.voidrp.anticheat.compat.Compat;
+
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.phys.Vec3;
@@ -25,8 +27,8 @@ public class FlyCheck {
 
         int threshold = (int) RemoteConfigManager.get("fly_ticks_threshold", (double) AnticheatConfig.FLY_TICKS_THRESHOLD.get());
         // Jump Boost extends hang-time: each amplifier level adds ~10 ticks
-        if (player.hasEffect(MobEffects.JUMP)) {
-            int amp = player.getEffect(MobEffects.JUMP).getAmplifier();
+        if (player.hasEffect(Compat.jumpBoostEffect())) {
+            int amp = player.getEffect(Compat.jumpBoostEffect()).getAmplifier();
             threshold += (amp + 1) * 12;
         }
         if (data.airTicks < threshold) return;
